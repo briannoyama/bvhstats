@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	config := flag.String("config", "testBVH.json",
+	config := flag.String("config", "main/testBVH.json",
 		"JSON configuration for the test.")
 	compare := flag.Bool("compare", false,
 		"Compare with Top Down method? Default False.")
@@ -52,7 +52,7 @@ type bvhTest struct {
 func (b *bvhTest) comparisonTest() {
 	orths := make([]volume.Orthotope[int32], 0, b.Additions)
 	r := rand.New(rand.NewSource(b.RandSeed))
-	btree := bvh.NewInt32Node[int](110000)
+	btree := bvh.NewInt32OrthTree[int](110000)
 	for a := 0; a < b.Additions; a += 1 {
 		orth := b.makeOrth(r)
 		orths = append(orths, orth)
@@ -66,7 +66,7 @@ func (b *bvhTest) runTest() {
 	refs := make([]int, b.Additions)
 	orths := make([]volume.Orthotope[int32], 0, b.Additions)
 	removed := make(map[int]bool, b.Additions)
-	btree := bvh.NewInt32Node[int](110000)
+	btree := bvh.NewInt32OrthTree[int](110000)
 	r := rand.New(rand.NewSource(b.RandSeed))
 
 	if b.Removals > b.Additions {
